@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAccessToken } from "./AccessToken";
 
 export const BASE_URL = import.meta.env.VITE_BASE_URL;
-export const API_BASE_URL = `${BASE_URL}/api`;
+export const API_BASE_URL = BASE_URL;
 
 export const axiosApi = axios.create({
   baseURL: API_BASE_URL,

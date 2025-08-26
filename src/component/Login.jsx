@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../redux/slices/authSlice";
+import { axiosApi } from "../providers/axiosInstances";
+import Input from "../common/Input";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -34,7 +36,12 @@ const Login = () => {
     setError("");
 
     try {
-      dispatch(loginUser(formData));
+      const response = await axiosApi.post("login", formData, {
+        withCredentials: true,
+      });
+      console.log("user", response.data.user);
+
+      dispatch(loginUser(response.data.user));
       navigate("/");
     } catch (err) {
       setError(
@@ -77,41 +84,31 @@ const Login = () => {
               </div>
             )}
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className="input input-bordered w-full focus:input-primary transition-colors"
-                required
-              />
-            </div>
+            <Input
+              label="Email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
 
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className="input input-bordered w-full focus:input-primary transition-colors"
-                required
-              />
-              <label className="label">
-                <a
-                  href="#"
-                  className="label-text-alt link link-primary hover:link-primary-focus"
-                >
-                  Forgot password?
-                </a>
-              </label>
-            </div>
+            <Input
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+            <label className="label">
+              <a
+                href="#"
+                className="label-text-alt link link-primary hover:link-primary-focus"
+              >
+                Forgot password?
+              </a>
+            </label>
 
             <div className="form-control mt-6">
               <button

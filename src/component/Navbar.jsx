@@ -1,17 +1,25 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/slices/authSlice";
 
 const Navbar = () => {
+  const dispatch = useDispatch();
   const authState = useSelector((state) => state.auth);
   const user = authState.user;
   console.log(user, "user");
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
   return (
     <div className="navbar bg-base-300 shadow-sm px-9">
       <div className="flex-1">
         <a className="btn btn-ghost text-xl">DevTinder </a>
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
+        <div className="text-sm mr-4">
+          {user.firstName} {user.lastName}
+        </div>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -30,13 +38,15 @@ const Navbar = () => {
             className="menu menu-sm dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow"
           >
             <li>
-              <a className="justify-between">Profile</a>
+              <a className="justify-between" href="/profile">
+                Profile
+              </a>
             </li>
             <li>
               <a>Settings</a>
             </li>
             <li>
-              <a>Logout</a>
+              <a onClick={handleLogout}>Logout</a>
             </li>
           </ul>
         </div>
