@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/slices/authSlice";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "mark@gmail.com",
@@ -31,22 +34,8 @@ const Login = () => {
     setError("");
 
     try {
-      console.log("Sending login request to:", "http://localhost:3000/login");
-      console.log("Request data:", formData);
-
-      const response = await axios.post(
-        "http://localhost:3000/login",
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
-        }
-      );
-      if (response.status === 200) {
-        navigate("/");
-      }
+      dispatch(loginUser(formData));
+      navigate("/");
     } catch (err) {
       setError(
         err.response?.data?.message || "Login failed. Please try again."

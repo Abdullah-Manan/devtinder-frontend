@@ -1,6 +1,11 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const authState = useSelector((state) => state.auth);
+  const user = authState.user;
+  console.log(user, "user");
+
   return (
     <div className="navbar bg-base-300 shadow-sm px-9">
       <div className="flex-1">
@@ -20,6 +25,20 @@ const Navbar = () => {
               />
             </div>
           </div>
+          <ul
+            tabIndex={0}
+            className="menu menu-sm dropdown-content bg-base-300 rounded-box z-1 mt-3 w-52 p-2 shadow"
+          >
+            <li>
+              <a className="justify-between">Profile</a>
+            </li>
+            <li>
+              <a>Settings</a>
+            </li>
+            <li>
+              <a>Logout</a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
