@@ -1,8 +1,8 @@
 import axios from "axios";
+import { BASE_URL } from "../common/const.js";
 
 const getAccessToken = "1234567890";
 
-export const BASE_URL = import.meta.env.VITE_BASE_URL;
 export const API_BASE_URL = BASE_URL;
 
 export const axiosApi = axios.create({
