@@ -32,6 +32,7 @@ const Connections = () => {
           <div className="text-center py-12">
             <div className="loading loading-spinner loading-lg text-primary"></div>
             <p className="mt-4 text-gray-600">Loading your connections...</p>
+            <p className="mt-4 text-gray-600">Loading your connections...</p>
           </div>
         </div>
       </div>
