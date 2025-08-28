@@ -8,6 +8,8 @@ import Signup from "./component/Signup";
 import Layout from "./component/Layout";
 import Home from "./component/Home";
 import Profile from "./component/Profile";
+import Requests from "./component/Requests";
+import Connections from "./component/Connections";
 
 function Routes() {
   return (
@@ -16,10 +18,13 @@ function Routes() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/requests" element={<Requests />} />
+          <Route path="/connections" element={<Connections />} />
         </Route>
       </Route>
       <Route element={<AuthRoute />}>
         <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
       </Route>
       <Route path="*" element={<Navigate to="/" />} />
     </AppRoutes>

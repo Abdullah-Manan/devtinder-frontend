@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Input from "../common/Input";
 
 const Signup = () => {
   const [formData, setFormData] = useState({
@@ -83,124 +84,59 @@ const Signup = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* First Name and Last Name Row */}
             <div className="grid grid-cols-2 gap-3">
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">First Name</span>
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  className={`input input-bordered w-full focus:input-primary transition-colors ${
-                    errors.firstName ? "input-error" : ""
-                  }`}
-                  required
-                />
-                {errors.firstName && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.firstName}
-                    </span>
-                  </label>
-                )}
-              </div>
+              <Input
+                label="First Name"
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                error={errors.firstName}
+                required
+              />
 
-              <div className="form-control">
-                <label className="label">
-                  <span className="label-text font-medium">Last Name</span>
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  className={`input input-bordered w-full focus:input-primary transition-colors ${
-                    errors.lastName ? "input-error" : ""
-                  }`}
-                  required
-                />
-                {errors.lastName && (
-                  <label className="label">
-                    <span className="label-text-alt text-error">
-                      {errors.lastName}
-                    </span>
-                  </label>
-                )}
-              </div>
+              <Input
+                label="Last Name"
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                error={errors.lastName}
+                required
+              />
             </div>
 
             {/* Email */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Email</span>
-              </label>
-              <input
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                className={`input input-bordered w-full focus:input-primary transition-colors ${
-                  errors.email ? "input-error" : ""
-                }`}
-                required
-              />
-              {errors.email && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.email}
-                  </span>
-                </label>
-              )}
-            </div>
+            <Input
+              label="Email"
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              error={errors.email}
+              required
+            />
 
             {/* Password */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Password</span>
-              </label>
-              <input
-                type="password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                className={`input input-bordered w-full focus:input-primary transition-colors ${
-                  errors.password ? "input-error" : ""
-                }`}
-                required
-              />
-              {errors.password && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.password}
-                  </span>
-                </label>
-              )}
-            </div>
+            <Input
+              label="Password"
+              type="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              error={errors.password}
+              required
+            />
 
             {/* Confirm Password */}
-            <div className="form-control">
-              <label className="label">
-                <span className="label-text font-medium">Confirm Password</span>
-              </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                className={`input input-bordered w-full focus:input-primary transition-colors ${
-                  errors.confirmPassword ? "input-error" : ""
-                }`}
-                required
-              />
-              {errors.confirmPassword && (
-                <label className="label">
-                  <span className="label-text-alt text-error">
-                    {errors.confirmPassword}
-                  </span>
-                </label>
-              )}
-            </div>
+            <Input
+              label="Confirm Password"
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              error={errors.confirmPassword}
+              required
+            />
 
             {/* Submit Button */}
             <div className="form-control mt-6">

@@ -6,10 +6,12 @@ export const API_BASE_URL = BASE_URL;
 
 export const axiosApi = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 export const axiosWithCredentials = axios.create({
   baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 axiosWithCredentials.interceptors.request.use(

@@ -15,6 +15,7 @@ const Profile = () => {
     gender: "",
     about: "",
     skills: [],
+    photoUrl: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -30,6 +31,7 @@ const Profile = () => {
         gender: user.gender || "",
         about: user.about || "",
         skills: user.skills || [],
+        photoUrl: user.photoUrl || "",
       });
     }
   }, [user]);
@@ -66,6 +68,10 @@ const Profile = () => {
 
     if (!formData.lastName.trim()) {
       newErrors.lastName = "Last name is required";
+    }
+
+    if (!formData.photoUrl.trim()) {
+      newErrors.photoUrl = "Photo URL is required";
     }
 
     if (!formData.gender) {
@@ -117,6 +123,7 @@ const Profile = () => {
         gender: user.gender || "",
         about: user.about || "",
         skills: user.skills || [],
+        photoUrl: user.photoUrl || "",
       });
     }
     setIsEditing(false);
@@ -168,6 +175,23 @@ const Profile = () => {
 
           {/* Profile Form */}
           <form onSubmit={handleSubmit} className="card-body">
+            <div className="avatar mb-4">
+              <div className="w-32 h-32 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 mx-auto">
+                {user.photoUrl ? (
+                  <img
+                    src={user.photoUrl}
+                    alt="Profile"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                ) : (
+                  <img
+                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=400&fit=crop&crop=face"
+                    alt="Profile"
+                    className="w-full h-full object-cover rounded-full"
+                  />
+                )}
+              </div>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* First Name */}
               <Input
@@ -200,6 +224,17 @@ const Profile = () => {
                 value={formData.email}
                 type="email"
                 disabled={true}
+                className="md:col-span-2"
+              />
+              <Input
+                label="Photo URL"
+                name="photoUrl"
+                value={formData.photoUrl}
+                onChange={handleInputChange}
+                placeholder="Enter your profile link"
+                required
+                error={errors.photoUrl}
+                disabled={!isEditing}
                 className="md:col-span-2"
               />
 

@@ -39,7 +39,6 @@ const Login = () => {
       const response = await axiosApi.post("login", formData, {
         withCredentials: true,
       });
-      console.log("user", response.data.user);
 
       dispatch(loginUser(response.data.user));
       navigate("/");
