@@ -20,7 +20,7 @@ const Navbar = () => {
       </div>
       <div className="flex gap-2 items-center">
         <div className="text-sm mr-4">
-          {user.firstName} {user.lastName}
+          {user?.firstName} {user?.lastName}
         </div>
         <div className="dropdown dropdown-end">
           <div
@@ -29,8 +29,8 @@ const Navbar = () => {
             className="btn btn-ghost btn-circle avatar"
           >
             <div className="w-10 rounded-full">
-              {user.photoUrl ? (
-                <img alt="Tailwind CSS Navbar component" src={user.photoUrl} />
+              {user?.photoUrl ? (
+                <img alt="Tailwind CSS Navbar component" src={user?.photoUrl} />
               ) : (
                 <img
                   alt="Tailwind CSS Navbar component"

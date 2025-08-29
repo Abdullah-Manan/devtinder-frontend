@@ -14,18 +14,18 @@ import Connections from "./component/Connections";
 function Routes() {
   return (
     <AppRoutes>
-      <Route element={<PrivateRoute />}>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/requests" element={<Requests />} />
-          <Route path="/connections" element={<Connections />} />
-        </Route>
+      {/* <Route element={<PrivateRoute />}> */}
+      <Route element={<Layout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/requests" element={<Requests />} />
+        <Route path="/connections" element={<Connections />} />
       </Route>
-      <Route element={<AuthRoute />}>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-      </Route>
+      {/* </Route> */}
+      {/* <Route element={<AuthRoute />}> */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      {/* </Route> */}
       <Route path="*" element={<Navigate to="/" />} />
     </AppRoutes>
   );
