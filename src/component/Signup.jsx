@@ -1,17 +1,25 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Input from "../common/Input";
+import Select from "../common/Select";
+import { axiosApi } from "../providers/axiosInstances";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
+    age: "",
     password: "",
     confirmPassword: "",
+    gender: "",
   });
 
   const [errors, setErrors] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -44,6 +52,12 @@ const Signup = () => {
       newErrors.email = "Please enter a valid email";
     }
 
+    if (!formData.age) {
+      newErrors.age = "Age is required";
+    } else if (isNaN(formData.age) || formData.age < 18 || formData.age > 100) {
+      newErrors.age = "Age must be between 18 and 100";
+    }
+
     if (!formData.password) {
       newErrors.password = "Password is required";
     } else if (formData.password.length < 6) {
@@ -56,17 +70,61 @@ const Signup = () => {
       newErrors.confirmPassword = "Passwords do not match";
     }
 
+    if (!formData.gender) {
+      newErrors.gender = "Gender is required";
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      // Handle signup logic here
-      console.log("Signup attempt:", formData);
+      setIsLoading(true);
+      try {
+        // Prepare data for API (exclude confirmPassword)
+        const signupData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          age: parseInt(formData.age),
+          password: formData.password,
+          gender: formData.gender,
+        };
+
+        const response = await axiosApi.post("/signin", signupData);
+        console.log("Signup successful:", response.data);
+        toast.success("Account created successfully! Please login.");
+        navigate("/login");
+        setFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          age: "",
+          password: "",
+          confirmPassword: "",
+          gender: "",
+        });
+      } catch (error) {
+        console.error("Signup error:", error);
+        if (error.response?.data?.message) {
+          alert(`Signup failed: ${error.response.data.message}`);
+        } else {
+          alert("Signup failed. Please try again.");
+        }
+      } finally {
+        setIsLoading(false);
+      }
     }
   };
+
+  const genderOptions = [
+    { value: "", label: "Select Gender" },
+    { value: "male", label: "Male" },
+    { value: "female", label: "Female" },
+    { value: "other", label: "Other" },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-200 to-base-300 flex items-center justify-center p-4">
@@ -116,6 +174,31 @@ const Signup = () => {
               required
             />
 
+            {/* Age and Gender Row */}
+            <div className="grid grid-cols-2 gap-3">
+              <Input
+                label="Age"
+                type="number"
+                name="age"
+                value={formData.age}
+                onChange={handleChange}
+                error={errors.age}
+                min="18"
+                max="100"
+                required
+              />
+
+              <Select
+                label="Gender"
+                name="gender"
+                value={formData.gender}
+                onChange={handleChange}
+                error={errors.gender}
+                options={genderOptions}
+                required
+              />
+            </div>
+
             {/* Password */}
             <Input
               label="Password"
@@ -142,9 +225,10 @@ const Signup = () => {
             <div className="form-control mt-6">
               <button
                 type="submit"
-                className="btn btn-primary w-full hover:btn-primary-focus transition-all duration-200"
+                disabled={isLoading}
+                className="btn btn-primary w-full hover:btn-primary-focus transition-all duration-200 disabled:opacity-50"
               >
-                Create Account
+                {isLoading ? "Creating Account..." : "Create Account"}
               </button>
             </div>
           </form>

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "../common/const.js";
+import { BASE_URL } from "../common/constants";
 
 const getAccessToken = "1234567890";
 
