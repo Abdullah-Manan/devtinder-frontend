@@ -103,49 +103,49 @@ const Requests = () => {
                   <div className="avatar">
                     <div className="w-16 h-16 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                       <img
-                        src={request.fromUserId.photoUrl}
-                        alt={`${request.fromUserId.firstName} ${request.fromUserId.lastName}`}
+                        src={request?.fromUserId?.photoUrl}
+                        alt={`${request?.fromUserId?.firstName} ${request?.fromUserId?.lastName}`}
                         className="w-full h-full object-cover"
                         onError={(e) => {
                           e.target.src =
                             "https://via.placeholder.com/64x64/6c757d/ffffff?text=" +
-                            request.fromUserId.firstName.charAt(0) +
-                            request.fromUserId.lastName.charAt(0);
+                            request?.fromUserId?.firstName?.charAt(0) +
+                            request?.fromUserId?.lastName?.charAt(0);
                         }}
                       />
                     </div>
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-bold text-base-content">
-                      {request.fromUserId.firstName}{" "}
-                      {request.fromUserId.lastName}
+                      {request?.fromUserId?.firstName}{" "}
+                      {request?.fromUserId?.lastName}
                     </h3>
                     <p className="text-base-content/70 text-sm">
-                      {request.fromUserId.email}
+                      {request?.fromUserId?.email}
                     </p>
                   </div>
                 </div>
 
                 {/* About Section */}
-                {request.fromUserId.about &&
-                  request.fromUserId.about !== "No bio" &&
-                  request.fromUserId.about !== "No bio added" && (
+                {request?.fromUserId?.about &&
+                  request?.fromUserId?.about !== "No bio" &&
+                  request?.fromUserId?.about !== "No bio added" && (
                     <div className="mb-4">
                       <p className="text-base-content/80 text-sm leading-relaxed">
-                        {request.fromUserId.about}
+                        {request?.fromUserId?.about}
                       </p>
                     </div>
                   )}
 
                 {/* Skills Section */}
-                {request.fromUserId.skills &&
-                  request.fromUserId.skills.length > 0 && (
+                {request?.fromUserId?.skills &&
+                  request?.fromUserId?.skills?.length > 0 && (
                     <div className="mb-4">
                       <h4 className="text-sm font-semibold text-primary mb-2">
                         Skills
                       </h4>
                       <div className="flex flex-wrap gap-2">
-                        {request.fromUserId.skills.map((skill, index) => (
+                        {request?.fromUserId?.skills?.map((skill, index) => (
                           <span
                             key={index}
                             className="badge badge-primary badge-outline text-xs px-3 py-2"
@@ -162,7 +162,7 @@ const Requests = () => {
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-base-content/70">Status:</span>
                     <span className="badge badge-info badge-sm capitalize">
-                      {request.status}
+                      {request?.status}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm mt-1">
