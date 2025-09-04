@@ -10,6 +10,7 @@ import Home from "./component/Home";
 import Profile from "./component/Profile";
 import Requests from "./component/Requests";
 import Connections from "./component/Connections";
+import Chat from "./component/Chat";
 
 function Routes() {
   return (
@@ -20,6 +21,7 @@ function Routes() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/connections" element={<Connections />} />
+          <Route path="/chat/:targetUserId" element={<Chat />} />
         </Route>
       </Route>
       <Route element={<AuthRoute />}>

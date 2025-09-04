@@ -120,7 +120,6 @@ const Signup = () => {
   };
 
   const genderOptions = [
-    { value: "", label: "Select Gender" },
     { value: "male", label: "Male" },
     { value: "female", label: "Female" },
     { value: "other", label: "Other" },

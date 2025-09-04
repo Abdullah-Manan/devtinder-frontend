@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getConnections } from "../services/endPoints";
+import { useNavigate } from "react-router-dom";
 
 const Connections = () => {
+  const navigate = useNavigate();
   const [connections, setConnections] = useState([]);
   const [loading, setLoading] = useState(true);
   const fetchConnections = async () => {
@@ -21,8 +23,8 @@ const Connections = () => {
     fetchConnections();
   }, []);
 
-  const handleMessage = (connectionId) => {
-    console.log("Message connection:", connectionId);
+  const handleMessage = (targetUserId) => {
+    navigate(`/chat/${targetUserId}`);
   };
 
   if (loading) {
@@ -112,7 +114,7 @@ const Connections = () => {
                   {/* Action Buttons */}
                   <div className="flex gap-3">
                     <button
-                      onClick={() => handleMessage(connection.id)}
+                      onClick={() => handleMessage(connection._id)}
                       className="btn btn-primary btn-sm flex-1"
                     >
                       <svg
