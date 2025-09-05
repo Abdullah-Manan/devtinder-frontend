@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/slices/authSlice";
+import { removeAuthToken } from "../utils/cookies";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -9,6 +10,7 @@ const Navbar = () => {
   const user = authState.user;
 
   const handleLogout = () => {
+    removeAuthToken();
     dispatch(logoutUser());
   };
   return (

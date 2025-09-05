@@ -1,7 +1,10 @@
 import axios from "axios";
 import { BASE_URL } from "../common/constants";
+import { getAuthToken } from "../utils/cookies";
 
-const getAccessToken = "1234567890";
+const getAccessToken = () => {
+  return getAuthToken();
+};
 
 export const API_BASE_URL = BASE_URL;
 
