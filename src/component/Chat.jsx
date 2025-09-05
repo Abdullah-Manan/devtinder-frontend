@@ -1,29 +1,46 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Input from "../common/Input";
+import createSocketConnection from "../utils/socket";
+import { useSelector } from "react-redux";
 
 const Chat = () => {
   const { targetUserId } = useParams();
-  const [messages, setMessages] = useState([
-    {
-      id: 1,
-      text: "Hey! How's it going?",
-      sender: "them",
-      timestamp: new Date(Date.now() - 60000),
-    },
-    {
-      id: 2,
-      text: "I'm doing great! Just working on some new projects.",
-      sender: "me",
-      timestamp: new Date(Date.now() - 30000),
-    },
-    {
-      id: 3,
-      text: "That sounds interesting! What kind of projects?",
-      sender: "them",
-      timestamp: new Date(Date.now() - 15000),
-    },
-  ]);
+  const user = useSelector((state) => state.auth.user);
+  const userId = user?.id;
+  const [messages, setMessages] = useState([]);
+  const socketRef = useRef(null);
+
+  useEffect(() => {
+    const socket = createSocketConnection();
+    socketRef.current = socket;
+
+    socket.emit("joinChat", {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      targetUserId,
+      userId,
+    });
+
+    socket.on("newMessageReceived", ({ text, firstName, lastName }) => {
+      console.log("Message received:", text, "from:", firstName, lastName);
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now(),
+          text,
+          firstName: firstName,
+          lastName: lastName,
+          timestamp: new Date(),
+        },
+      ]);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [targetUserId, userId, user]);
+
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
 
@@ -36,36 +53,16 @@ const Chat = () => {
   }, [messages]);
 
   const handleSendMessage = () => {
-    if (newMessage.trim()) {
-      const message = {
-        id: Date.now(),
-        text: newMessage,
-        sender: "me",
-        timestamp: new Date(),
-      };
-      setMessages([...messages, message]);
-      setNewMessage("");
+    if (!newMessage.trim() || !socketRef.current) return;
+    socketRef.current.emit("sendMessage", {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      userId: userId,
+      targetUserId: targetUserId,
+      text: newMessage,
+    });
 
-      // Simulate response after 1-2 seconds
-      setTimeout(() => {
-        const responses = [
-          "That's cool!",
-          "Interesting point!",
-          "I see what you mean.",
-          "Thanks for sharing!",
-          "What do you think about that?",
-        ];
-        const randomResponse =
-          responses[Math.floor(Math.random() * responses.length)];
-        const responseMessage = {
-          id: Date.now() + 1,
-          text: randomResponse,
-          sender: "them",
-          timestamp: new Date(),
-        };
-        setMessages((prev) => [...prev, responseMessage]);
-      }, 1000 + Math.random() * 1000);
-    }
+    setNewMessage("");
   };
 
   const handleKeyPress = (e) => {
@@ -107,12 +104,14 @@ const Chat = () => {
           <div
             key={message.id}
             className={`flex ${
-              message.sender === "me" ? "justify-end" : "justify-start"
+              message.firstName === user?.firstName
+                ? "justify-end"
+                : "justify-start"
             }`}
           >
             <div
               className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
-                message.sender === "me"
+                message.firstName === user?.firstName
                   ? "bg-blue-500 text-white rounded-br-none"
                   : "bg-white text-gray-900 rounded-bl-none shadow-sm border border-gray-200"
               }`}
@@ -120,7 +119,9 @@ const Chat = () => {
               <p className="text-sm">{message.text}</p>
               <p
                 className={`text-xs mt-1 ${
-                  message.sender === "me" ? "text-blue-100" : "text-gray-400"
+                  message.firstName === user?.firstName
+                    ? "text-blue-100"
+                    : "text-gray-400"
                 }`}
               >
                 {formatTime(message.timestamp)}
