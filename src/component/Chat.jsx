@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import Input from "../common/Input";
 import createSocketConnection from "../utils/socket";
 import { useSelector } from "react-redux";
+import { axiosApi } from "../providers/axiosInstances";
 
 const Chat = () => {
   const { targetUserId } = useParams();
@@ -12,6 +13,9 @@ const Chat = () => {
   const socketRef = useRef(null);
   const [newMessage, setNewMessage] = useState("");
   const messagesEndRef = useRef(null);
+  const [userProfile, setUserProfile] = useState(null);
+  const [isLoadingProfile, setIsLoadingProfile] = useState(true);
+  const [profileError, setProfileError] = useState(null);
 
   useEffect(() => {
     const socket = createSocketConnection();
@@ -47,11 +51,32 @@ const Chat = () => {
     return () => {
       socket.disconnect();
     };
-  }, [targetUserId, userId, user]);
+  }, [targetUserId, userId, user?.firstName, user?.lastName]);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!targetUserId) return;
+
+      try {
+        setIsLoadingProfile(true);
+        setProfileError(null);
+        const response = await axiosApi.get(`/profile/${targetUserId}`);
+        setUserProfile(response.data.user);
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+        setProfileError("Failed to load user profile");
+        setUserProfile(null);
+      } finally {
+        setIsLoadingProfile(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [targetUserId]);
 
   useEffect(() => {
     scrollToBottom();
@@ -110,14 +135,16 @@ const Chat = () => {
       {/* Header */}
       <div className="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
         <div className="flex items-center space-x-3">
-          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center shadow-md">
-            <span className="text-white font-semibold text-lg">
-              {targetUserId ? targetUserId.charAt(0).toUpperCase() : "U"}
-            </span>
+          <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-4xl flex items-center justify-center shadow-md">
+            <img
+              src={userProfile?.photoUrl}
+              alt="User Profile"
+              className="w-full h-full object-cover rounded-4xl"
+            />
           </div>
           <div className="flex-1">
             <h1 className="text-lg font-semibold text-gray-900">
-              {targetUserId || "User"}
+              {userProfile?.firstName + " " + userProfile?.lastName || "User"}
             </h1>
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full"></div>
