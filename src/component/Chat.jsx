@@ -17,6 +17,7 @@ const Chat = () => {
   const [isLoadingProfile, setIsLoadingProfile] = useState(true);
   const [profileError, setProfileError] = useState(null);
 
+  console.log(userProfile);
   useEffect(() => {
     const socket = createSocketConnection();
     socketRef.current = socket;
