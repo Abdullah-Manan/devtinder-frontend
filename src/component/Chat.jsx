@@ -349,7 +349,6 @@ const Chat = () => {
           </span>
         </div>
       </div>
-      <div className="bg-white border-t border-gray-200 px-6 py-4 shadow-lg"></div>
     </div>
   );
 };
