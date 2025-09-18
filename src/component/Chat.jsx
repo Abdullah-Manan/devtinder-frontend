@@ -349,7 +349,6 @@ const Chat = () => {
           </span>
         </div>
       </div>
-      {console.log(userProfile)}
     </div>
   );
 };
