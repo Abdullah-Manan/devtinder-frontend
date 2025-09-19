@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -17,6 +18,7 @@ const Signup = () => {
     confirmPassword: "",
     gender: "",
   });
+  console.log(formData);
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
