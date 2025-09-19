@@ -18,7 +18,6 @@ const Signup = () => {
     confirmPassword: "",
     gender: "",
   });
-  console.log(formData);
 
   const [errors, setErrors] = useState({});
   const [isLoading, setIsLoading] = useState(false);
